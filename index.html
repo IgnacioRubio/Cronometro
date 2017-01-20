@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+	
+	<title>Cronometro</title>
+	<meta charset='UTF-8'/>
+
+	<style>
+		div
+		{
+			text-align: center;
+		}
+	</style>
+
+	<script>
+
+		var hh = 0; //horas
+		var mm = 0; //minutos
+		var ss = 0; //segundos
+
+		var boolIniciado = false; // saber si ya se ha pulsado iniciar
+
+		var temporizador;
+
+		function mostrarCrono()
+		{
+			var salida = "";
+
+			if(ss==59)
+			{
+				ss = 0;
+				mm++;
+			}
+			else
+				ss++;
+
+			if(mm==59)
+			{
+				mm = 0;
+				hh++;
+			}
+
+			salida = hh;
+
+			if(mm<10)
+				salida += ":0" +mm;
+			else
+				salida += ":" +mm;
+
+			if(ss<10)
+				salida += ":0" +ss;
+			else
+				salida += ":" +ss;
+
+			document.getElementById('pantCrono').value = salida;
+
+
+		}
+
+		function iniciarCrono()
+		{
+			if(!boolIniciado)
+			{
+				temporizador = setInterval(mostrarCrono, 1000);
+				boolIniciado = true;
+			}
+		}
+
+		function pararCrono()
+		{
+			if(temporizador!=undefined)
+			{
+				clearInterval(temporizador);
+				document.getElementById('bIniciar').innerText = "Reanudar";
+				boolIniciado = false;
+			}
+		}
+
+		function ponerCero()
+		{
+			pararCrono();
+
+			ss = 0;
+			mm = 0;
+			hh = 0;
+
+			boolIniciado = false;
+
+			document.getElementById('bIniciar').innerText = "Iniciar";
+			document.getElementById('pantCrono').value = "0:00:00";
+		}
+
+
+	</script>
+
+</head>
+
+<body>
+
+	<div>
+		<input type="text" id="pantCrono" readonly size="10" value="0:00:00">
+
+		<button type="button" id="bIniciar" style="width:100px" onclick="iniciarCrono()">Iniciar</button>
+		<br/><br/>
+		<button type="button" onclick="pararCrono()">Parar</button>
+		<button type="button" style="margin-right: 100px" onclick="ponerCero()">Cero</button>
+	</div>
+
+</body>
+
+</html>
